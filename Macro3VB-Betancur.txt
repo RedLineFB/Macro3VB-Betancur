@@ -1,0 +1,111 @@
+Sub Boton()
+    Dim Celda As Object
+    Dim primeraCelda As Range
+    Dim Columna As Range
+    Dim FB1 As Range
+    Dim FB2 As Range
+    Dim FB3 As Range
+    Dim RangoFB2 As Range
+    Dim formatoTex As String
+    Dim Cont As Integer
+    Dim segundoArchivo As Workbook
+    Dim rutaArchivo2 As String
+    
+    rutaArchivo2 = Cambiar ruta"
+    
+    *CAMBIAR RUTA*
+    Set segundoArchivo = Workbooks.Open(rutaArchivo2)
+    
+    *CAMBIAR HOJAS*
+    Set FB1 = segundoArchivo.Sheets("Cambiar hoja").Range("K1:L137")
+    Set FB2 = segundoArchivo.Sheets("Cambiar hoja").Range("M1:N137")
+    Set FB3 = segundoArchivo.Sheets("Cambiar hoja").Range("R1:CK137")
+      
+        
+      For Each Celda In FB1
+         Set Columna = Celda.EntireColumn
+         Set primeraCelda = Columna.Cells(1)
+         
+         If primeraCelda = "Total haberes" Then
+            formatoTex = Format(Celda.Value, "0000000.00")
+            Celda.NumberFormat = "@"
+            Celda.Value = Replace(formatoTex, ",", "")
+        End If
+    Next Celda
+    
+     For Each Celda In FB2
+         Set Columna = Celda.EntireColumn
+         Set primeraCelda = Columna.Cells(1)
+          
+         If primeraCelda = "JUBILACION" Or primeraCelda = "OBRA SOCIAL" Then
+            
+            formatoTex = Format(Celda.Value, "00000.00")
+            Celda.NumberFormat = "@"
+            Celda.Value = Replace(formatoTex, ",", "")
+            
+        End If
+   
+    
+      Next Celda
+    
+    
+     For Each Celda In FB2
+         Set Columna = Celda.EntireColumn
+         Set primeraCelda = Columna.Cells(1)
+          
+         If primeraCelda = "JUBILACION" Or primeraCelda = "OBRA SOCIAL" Then
+            
+            Cont = Len(Celda.Value)
+        
+            If Cont = 8 Then
+               
+                Celda.Value = "0000000"
+            End If
+        
+        End If
+    
+     Next Celda
+     
+     For Each Celda In FB3
+           
+               If Celda = "" And Celda.Offset(0, 1) <> "" And Celda.Offset(0, 2) <> "" Then
+                  
+                   Set Columna = Celda.EntireColumn
+                   Set primeraCelda = Columna.Cells(1)
+                   
+                   If IsNumeric(primeraCelda) Then
+                    
+                     Celda.Value = primeraCelda.Value
+                    
+                   End If
+               End If
+          
+        Next Celda
+        
+      For Each Celda In FB3
+         Set Columna = Celda.EntireColumn
+         Set primeraCelda = Columna.Cells(1)
+         
+         If primeraCelda = "IMPORTE" Then
+            formatoTex = Format(Celda.Value, "0000000.00")
+            Celda.NumberFormat = "@"
+            Celda.Value = Replace(formatoTex, ",", "")
+        End If
+    Next Celda
+    
+    For Each Celda In FB3
+         Set Columna = Celda.EntireColumn
+         Set primeraCelda = Columna.Cells(1)
+         
+         If primeraCelda = "Cantidad" Then
+            formatoTex = Format(Celda.Value, "00000.00")
+            Celda.NumberFormat = "@"
+            Celda.Value = Replace(formatoTex, ",", "")
+        End If
+    Next Celda
+  
+   segundoArchivo.Close SaveChanges:=True
+   
+   Set segundoArchivo = Nothing
+
+End Sub
